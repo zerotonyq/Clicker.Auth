@@ -1,0 +1,40 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickerAuth.Application", "ClickerAuth.Application\ClickerAuth.Application.csproj", "{7838FDBE-E447-4493-9D31-0B6F38896579}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickerAuth.Shared", "ClickerAuth.Shared\ClickerAuth.Shared.csproj", "{D80B14BB-5280-42D1-882F-2A5B6CA62CED}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickerAuth.Presentation", "ClickerAuth.Presentation\ClickerAuth.Presentation.csproj", "{BC9957F3-BF91-40FD-87B3-9014970187AC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickerAuth.Domain", "ClickerAuth.Domain\ClickerAuth.Domain.csproj", "{E1EC34B4-C02E-4347-B8B4-03B42EEA508E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ClickerAuth.Infrastructure", "ClickerAuth.Infrastructure\ClickerAuth.Infrastructure.csproj", "{132877D3-72BA-4AB6-9C12-5A6604C8A957}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7838FDBE-E447-4493-9D31-0B6F38896579}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7838FDBE-E447-4493-9D31-0B6F38896579}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7838FDBE-E447-4493-9D31-0B6F38896579}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7838FDBE-E447-4493-9D31-0B6F38896579}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D80B14BB-5280-42D1-882F-2A5B6CA62CED}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D80B14BB-5280-42D1-882F-2A5B6CA62CED}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D80B14BB-5280-42D1-882F-2A5B6CA62CED}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D80B14BB-5280-42D1-882F-2A5B6CA62CED}.Release|Any CPU.Build.0 = Release|Any CPU
+		{BC9957F3-BF91-40FD-87B3-9014970187AC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{BC9957F3-BF91-40FD-87B3-9014970187AC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{BC9957F3-BF91-40FD-87B3-9014970187AC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{BC9957F3-BF91-40FD-87B3-9014970187AC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E1EC34B4-C02E-4347-B8B4-03B42EEA508E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E1EC34B4-C02E-4347-B8B4-03B42EEA508E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E1EC34B4-C02E-4347-B8B4-03B42EEA508E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E1EC34B4-C02E-4347-B8B4-03B42EEA508E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{132877D3-72BA-4AB6-9C12-5A6604C8A957}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{132877D3-72BA-4AB6-9C12-5A6604C8A957}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{132877D3-72BA-4AB6-9C12-5A6604C8A957}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{132877D3-72BA-4AB6-9C12-5A6604C8A957}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal
