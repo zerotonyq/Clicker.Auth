@@ -8,7 +8,7 @@
 CREATE TABLE IF NOT EXISTS leagues
 (
     id              SERIAL PRIMARY KEY,
-    name            VARCHAR NOT NULL,
+    name            VARCHAR NOT NULL unique,
     required_rating INT DEFAULT 0
 );
 
@@ -27,6 +27,19 @@ CREATE TABLE IF NOT EXISTS user_lobby_points
     points   INT DEFAULT 0 NOT NULL
 );
 
+create table if not exists roles(
+    id serial primary key,
+    role varchar not null
+);
+
+insert into roles (role) values ('User');
+
+create table if not exists user_roles(
+    id serial primary key,
+    user_id int references users(id) on delete cascade ,
+    role_id int references roles(id) on delete cascade 
+);
+
 CREATE TABLE IF NOT EXISTS user_rating
 (
     id            SERIAL PRIMARY KEY,
@@ -42,7 +55,7 @@ CREATE TABLE IF NOT EXISTS user_statistics
     total_sprints INT DEFAULT 0
 );
 
-CREATE OR REPLACE FUNCTION user_lobby_points_insert() RETURNS TRIGGER AS
+CREATE OR REPLACE FUNCTION user_after_insert() RETURNS TRIGGER AS
 $$
 BEGIN
     INSERT INTO user_lobby_points (user_id)
@@ -53,6 +66,8 @@ BEGIN
     VALUES (NEW.id);
     INSERT INTO user_money (user_id)
     VALUES (NEW.id);
+    INSERT INTO user_roles (user_id, role_id)
+    VALUES (NEW.id, (select id from roles where role = 'User'));
     RETURN NEW;
 END;
 $$ LANGUAGE plpgsql;
@@ -61,7 +76,7 @@ CREATE OR REPLACE TRIGGER trigger_users_insert
     AFTER INSERT
     ON users
     FOR EACH ROW
-EXECUTE FUNCTION user_lobby_points_insert();
+EXECUTE FUNCTION user_after_insert();
 
 CREATE TABLE IF NOT EXISTS refresh_tokens
 (

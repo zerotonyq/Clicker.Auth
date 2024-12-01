@@ -1,4 +1,5 @@
-﻿using ClickerAuth.Application.AuthService.Commands.Auth.Contracts;
+﻿using Clicker.Results;
+using ClickerAuth.Application.AuthService.Commands.Auth.Contracts;
 using ClickerAuth.Application.AuthService.Commands.RenewJwt.Contracts;
 using ClickerAuth.Application.AuthService.Commands.SignIn.Contracts;
 using ClickerAuth.Application.AuthService.Commands.SignUp.Contracts;
@@ -23,7 +24,7 @@ public class AuthController(IMediator mediator)
         }
         catch (Exception e)
         {
-            return new NotFoundResult();
+            return new ErrorResult("Невозможно авторизоваться: " + e.Message);
         }
         
     }

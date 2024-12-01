@@ -7,18 +7,26 @@ using MediatR;
 
 namespace ClickerAuth.Application.AuthService.Commands.SignIn;
 
-public class SignInHandler(AuthRepository repository, JwtProvider jwtProvider) : IRequestHandler<SignInRequest, SignInResponse>
-{  
+public class SignInHandler(AuthRepository repository, JwtProvider jwtProvider)
+    : IRequestHandler<SignInRequest, SignInResponse>
+{
     public async Task<SignInResponse> Handle(SignInRequest request, CancellationToken cancellationToken)
     {
-        var userAuthDto =await GetUser(request.Username, request.Password, cancellationToken);
+        var userAuthDto = await GetUser(request.Username, cancellationToken);
 
         if (userAuthDto == null)
-            throw new NullReferenceException("There is no user with such credentials");
+            throw new NullReferenceException("Нет такого пользователя");
 
-        var pair =await jwtProvider.GetNewPair(userAuthDto.Username, cancellationToken);
+        if (string.IsNullOrEmpty(userAuthDto.PasswordHash))
+            throw new ArgumentException("Пароль не может быть пустым");
 
-        return new SignInResponse { AccessToken = pair.Item1, RefreshToken = pair.Item2};
+        if (!ValidatePasswordHash(request.Password, userAuthDto.PasswordHash))
+            throw new ArgumentException("Неверный пароль");
+
+        
+        var pair = await jwtProvider.GetNewPair(userAuthDto.Username, cancellationToken, userAuthDto.Roles);
+
+        return new SignInResponse { AccessToken = pair.Item1, RefreshToken = pair.Item2 };
     }
 
     private bool ValidatePasswordHash(string password, string passwordHash)
@@ -26,7 +34,7 @@ public class SignInHandler(AuthRepository repository, JwtProvider jwtProvider) :
         var hashBytes = Convert.FromBase64String(passwordHash);
 
         var salt = new byte[16];
-        
+
         Array.Copy(hashBytes, 0, salt, 0, 16);
 
         var pbkdf2 = new Rfc2898DeriveBytes(password, salt, 10000, HashAlgorithmName.SHA256);
@@ -40,17 +48,13 @@ public class SignInHandler(AuthRepository repository, JwtProvider jwtProvider) :
         return true;
     }
 
-    private async Task<UserAuthDto?> GetUser(string requestUsername, string requestPassword, CancellationToken cancellationToken)
+    public async Task<UserAuthDto?> GetUser(string requestUsername, CancellationToken cancellationToken)
     {
         var authDto = await repository.GetUser(requestUsername, cancellationToken);
 
-        if (authDto == null || string.IsNullOrEmpty(authDto.PasswordHash))
-            return null;
-            
-        if (!ValidatePasswordHash(requestPassword, authDto.PasswordHash))
+        if (authDto == null)
             return null;
 
         return requestUsername != authDto.Username ? null : authDto;
     }
-
 }
