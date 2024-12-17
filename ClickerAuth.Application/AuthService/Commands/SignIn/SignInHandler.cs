@@ -24,7 +24,7 @@ public class SignInHandler(AuthRepository repository, JwtProvider jwtProvider)
             throw new ArgumentException("Неверный пароль");
 
         
-        var pair = await jwtProvider.GetNewPair(userAuthDto.Username, cancellationToken, userAuthDto.Roles);
+        var pair = await jwtProvider.GetNewPair(userAuthDto.Username, cancellationToken, userAuthDto.Roles, userAuthDto.Id);
 
         return new SignInResponse { AccessToken = pair.Item1, RefreshToken = pair.Item2 };
     }

@@ -22,7 +22,7 @@ public class RenewJwtHandler(SignInHandler signInHandler, RefreshTokensRepositor
         if(userAuthDto == null)
             throw new NullReferenceException("Нет такого пользователя");
 
-        var pair =await jwtProvider.GetNewPair(request.Username, cancellationToken, userAuthDto.Roles);
+        var pair =await jwtProvider.GetNewPair(request.Username, cancellationToken, userAuthDto.Roles, userAuthDto.Id);
         
         await refreshTokensRepository.RevokeRefreshToken(request.RefreshToken, cancellationToken);
         

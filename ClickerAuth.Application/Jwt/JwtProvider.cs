@@ -17,18 +17,20 @@ public class JwtProvider(RefreshTokensRepository refreshTokensRepository)
     public static SymmetricSecurityKey GetSymmetricSecurityKey() => new(Encoding.ASCII.GetBytes(Key));
 
     public async Task<(string access, string refresh)> GetNewPair(string username, CancellationToken cancellationToken,
-        string[] roles)
+        string[] roles, int id)
     {
         var now = DateTime.UtcNow;
         
-        
         var accessToken = CreateToken(now, [
             new Claim("Username", username),
-            new Claim("Role", string.Join(",",roles))
+            new Claim("Role", string.Join(",",roles)),
+            new Claim("Id", id.ToString())
         ], AccessLifetime);
         var refreshToken = CreateToken(now, [
             new Claim("Username", username),
-            new Claim("Role", string.Join(",",roles))
+            new Claim("Role", string.Join(",",roles)),
+            new Claim("Id", id.ToString())
+            
         ], RefreshLifetime);
 
         var encodedAccessToken = new JwtSecurityTokenHandler().WriteToken(accessToken);

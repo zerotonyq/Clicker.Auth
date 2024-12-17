@@ -1,10 +1,7 @@
-﻿using Clicker.Results;
-using ClickerAuth.Application.AuthService.Commands.Auth.Contracts;
-using ClickerAuth.Application.AuthService.Commands.RenewJwt.Contracts;
+﻿using ClickerAuth.Application.AuthService.Commands.RenewJwt.Contracts;
 using ClickerAuth.Application.AuthService.Commands.SignIn.Contracts;
 using ClickerAuth.Application.AuthService.Commands.SignUp.Contracts;
 using MediatR;
-using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using SignInRequest = ClickerAuth.Application.AuthService.Commands.Auth.Contracts.SignInRequest;
 using SignInResponse = ClickerAuth.Application.AuthService.Commands.Auth.Contracts.SignInResponse;
@@ -24,7 +21,11 @@ public class AuthController(IMediator mediator)
         }
         catch (Exception e)
         {
-            return new ErrorResult("Невозможно авторизоваться: " + e.Message);
+            return new ContentResult()
+            {
+                Content = "Невозможно войти: " + e.Message,
+                StatusCode = 404
+            };
         }
         
     }
@@ -32,13 +33,34 @@ public class AuthController(IMediator mediator)
     [HttpPost(nameof(SignUp))]
     public async Task<ActionResult<SignUpResponse>> SignUp([FromBody] SignUpRequest request)
     {
-        return await mediator.Send(request);
+        try
+        {
+            return await mediator.Send(request);
+        }
+        catch (Exception e)
+        {
+            return new ContentResult()
+            {
+                Content = "Невозможно зарегистрироваться: " + e.Message,
+                StatusCode = 404
+            };
+        }
     }
 
     [HttpPost(nameof(RenewToken))]
-    public async Task<RenewJwtResponse> RenewToken([FromBody] RenewJwtRequest request)
+    public async Task<ActionResult<RenewJwtResponse>> RenewToken([FromBody] RenewJwtRequest request)
     {
-        Console.WriteLine(request.Username);
-        return await mediator.Send(request);
+        try
+        {
+            return await mediator.Send(request);
+        }
+        catch (Exception e)
+        {
+            return new ContentResult()
+            {
+                Content = "Невозможно обновить токен: " + e.Message,
+                StatusCode = 404
+            };
+        }
     }
 }
