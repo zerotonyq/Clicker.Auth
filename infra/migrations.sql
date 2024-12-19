@@ -107,3 +107,25 @@ create table if not exists user_money
     user_id int references users (id) on delete cascade,
     amount  int default 0
 );
+
+create table if not exists sprints
+(
+    id serial primary key,
+    winner_id int references users(id) on delete cascade,
+    lobby_id int references lobbies(id) on delete cascade 
+);
+
+CREATE OR REPLACE FUNCTION sprints_after_insert() RETURNS TRIGGER AS
+$$
+BEGIN
+    update user_statistics set total_sprints = total_sprints + 1 where user_id in 
+    (select id from user_lobby_points where lobby_id = new.lobby_id); 
+    RETURN NEW;
+END;
+$$ LANGUAGE plpgsql;
+
+CREATE OR REPLACE TRIGGER trigger_sprint_ended
+    AFTER INSERT
+    ON sprints
+    FOR EACH ROW
+EXECUTE FUNCTION sprints_after_insert();
